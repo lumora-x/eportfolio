@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dev Pratap Singh - Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-void:#05030f;
+    --bg-panel:#0d0821;
+    --bg-panel-2:#120a2e;
+    --neon-cyan:#4deeea;
+    --neon-pink:#ff3caa;
+    --neon-violet:#9d4edd;
+    --neon-lime:#c6ff3f;
+    --text-primary:#f1f0ff;
+    --text-body:#c7c2e8;
+    --text-muted:#8b85b8;
+    --line:rgba(157,78,221,0.28);
+    --nav-h:64px;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(157,78,221,0.20), transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 100%, rgba(77,238,234,0.10), transparent 60%),
+      var(--bg-void);
+    color:var(--text-body);
+    font-family:'Space Grotesk', sans-serif;
+    font-size:17px;
+    overflow-x:hidden;
+    min-height:100vh;
+  }
+
+  #bg-canvas{
+    position:fixed;
+    inset:0;
+    width:100vw;
+    height:100vh;
+    z-index:0;
+    pointer-events:none;
+  }
+
+  .page{ position:relative; z-index:1; }
+
+  a{ color:var(--neon-cyan); }
+
+  /* ---------- Scroll progress ---------- */
+  .scroll-progress{
+    position:fixed;
+    top:0; left:0;
+    height:3px;
+    width:0%;
+    background:linear-gradient(90deg, var(--neon-cyan), var(--neon-violet), var(--neon-pink));
+    box-shadow:0 0 10px rgba(157,78,221,0.7);
+    z-index:1000;
+  }
+
+  /* ---------- Nav ---------- */
+  .site-nav{
+    position:fixed;
+    top:0; left:0; right:0;
+    height:var(--nav-h);
+    z-index:900;
+    background:rgba(5,3,15,0.55);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+
+  .nav-inner{
+    max-width:1100px;
+    margin:0 auto;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 1.4rem;
+    gap:1rem;
+  }
+
+  .nav-logo{
+    font-family:'Orbitron', sans-serif;
+    font-weight:800;
+    font-size:1.1rem;
+    color:var(--text-primary);
+    text-decoration:none;
+    text-shadow:0 0 12px rgba(77,238,234,0.6);
+    flex-shrink:0;
+  }
+
+  .nav-links{
+    display:flex;
+    gap:1.4rem;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .nav-links::-webkit-scrollbar{ display:none; }
+
+  .nav-links a{
+    color:var(--text-muted);
+    text-decoration:none;
+    font-size:0.92rem;
+    white-space:nowrap;
+    transition:color 0.2s ease;
+  }
+  .nav-links a:hover{ color:var(--neon-cyan); }
+
+  @media (max-width:600px){
+    .nav-links{ gap:0.9rem; font-size:0.85rem; }
+  }
+
+  /* ---------- Layout helpers ---------- */
+  section{
+    padding:6.5rem 1.5rem;
+    max-width:960px;
+    margin:0 auto;
+    scroll-margin-top:var(--nav-h);
+  }
+
+  .prose{ max-width:660px; }
+
+  .divider{
+    width:min(340px, 70%);
+    height:2px;
+    margin:0 auto;
+    background:linear-gradient(90deg, transparent, var(--neon-cyan), var(--neon-violet), var(--neon-pink), transparent);
+    box-shadow:0 0 14px rgba(157,78,221,0.6);
+    border-radius:2px;
+  }
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(22px);
+    transition:opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:calc(var(--nav-h) + 2rem) 1.5rem 2rem;
+    gap:1.8rem;
+  }
+
+  .hero-tag{
+    font-size:1rem;
+    letter-spacing:0.04em;
+    color:var(--neon-lime);
+    text-shadow:0 0 10px rgba(198,255,63,0.6);
+  }
+
+  h1.name{
+    font-family:'Orbitron', sans-serif;
+    font-weight:900;
+    font-size:clamp(2.6rem, 10vw, 6.2rem);
+    line-height:1.05;
+    margin:0;
+    letter-spacing:0.02em;
+    color:var(--text-primary);
+    text-shadow:
+      0 0 6px rgba(255,255,255,0.55),
+      0 0 18px var(--neon-cyan),
+      0 0 38px var(--neon-violet),
+      0 0 70px rgba(255,60,170,0.35);
+    animation:neonPulse 3.6s ease-in-out infinite;
+  }
+
+  @keyframes neonPulse{
+    0%, 100%{
+      text-shadow:
+        0 0 6px rgba(255,255,255,0.55),
+        0 0 18px var(--neon-cyan),
+        0 0 38px var(--neon-violet),
+        0 0 70px rgba(255,60,170,0.35);
+    }
+    50%{
+      text-shadow:
+        0 0 10px rgba(255,255,255,0.75),
+        0 0 26px var(--neon-cyan),
+        0 0 54px var(--neon-violet),
+        0 0 95px rgba(255,60,170,0.55);
+    }
+  }
+
+  .hero-sub{
+    font-size:clamp(1.05rem, 2.6vw, 1.4rem);
+    color:var(--text-body);
+    max-width:36ch;
+  }
+
+  .hero-sub strong{ color:var(--neon-pink); font-weight:600; }
+
+  .hero-badges{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.7rem;
+    justify-content:center;
+    margin-top:0.4rem;
+  }
+
+  .badge{
+    font-size:0.85rem;
+    padding:0.4rem 0.9rem;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:rgba(157,78,221,0.08);
+    color:var(--text-body);
+  }
+
+  .scroll-hint{ margin-top:0.6rem; font-size:0.85rem; color:var(--text-muted); }
+
+  /* ---------- Section headings ---------- */
+  h2.section-title{
+    font-family:'Orbitron', sans-serif;
+    font-weight:700;
+    font-size:clamp(1.6rem, 3.8vw, 2.3rem);
+    color:var(--text-primary);
+    margin:0 0 0.6rem 0;
+  }
+
+  h2.section-title.c-cyan{ text-shadow:0 0 16px rgba(77,238,234,0.55); }
+  h2.section-title.c-pink{ text-shadow:0 0 16px rgba(255,60,170,0.55); }
+  h2.section-title.c-violet{ text-shadow:0 0 16px rgba(157,78,221,0.55); }
+  h2.section-title.c-lime{ text-shadow:0 0 16px rgba(198,255,63,0.5); }
+
+  .section-lede{
+    color:var(--text-muted);
+    margin:0 0 2.6rem 0;
+    font-size:1.02rem;
+  }
+
+  /* ---------- About ---------- */
+  .about p{ font-size:1.08rem; line-height:1.8; }
+
+  .about-card{
+    border-left:3px solid var(--neon-cyan);
+    background:rgba(77,238,234,0.05);
+    padding:1.6rem 1.8rem;
+    border-radius:6px;
+    box-shadow:-6px 0 24px rgba(77,238,234,0.08);
+    margin-bottom:2.4rem;
+  }
+
+  .stat-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+    gap:1.2rem;
+  }
+
+  .stat-card{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:1.4rem;
+    text-align:center;
+  }
+
+  .stat-icon{ font-size:1.8rem; margin-bottom:0.5rem; }
+  .stat-label{ font-size:0.82rem; color:var(--text-muted); text-transform:none; }
+  .stat-value{ font-size:1.02rem; color:var(--text-primary); margin-top:0.25rem; font-weight:600; }
+
+  /* ---------- Skills ---------- */
+  .skill-list{ display:flex; flex-direction:column; gap:1.5rem; }
+
+  .skill-top{ display:flex; justify-content:space-between; margin-bottom:0.5rem; font-size:0.98rem; }
+  .skill-name{ color:var(--text-primary); }
+  .skill-pct{ color:var(--neon-cyan); }
+
+  .skill-track{
+    height:12px;
+    border-radius:8px;
+    background:rgba(255,255,255,0.06);
+    box-shadow:inset 0 0 6px rgba(0,0,0,0.4);
+    overflow:hidden;
+  }
+
+  .skill-fill{
+    height:100%;
+    width:0%;
+    border-radius:8px;
+    background:linear-gradient(90deg, var(--neon-cyan), var(--neon-violet));
+    box-shadow:0 0 12px rgba(77,238,234,0.5);
+    transition:width 1.2s cubic-bezier(.2,.8,.2,1);
+  }
+
+  /* ---------- Hobbies ---------- */
+  .chip-grid{ display:flex; flex-wrap:wrap; gap:0.8rem; }
+
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    padding:0.55rem 1.1rem;
+    border-radius:999px;
+    border:1px solid var(--neon-violet);
+    background:rgba(157,78,221,0.08);
+    color:var(--text-primary);
+    font-size:0.95rem;
+    box-shadow:0 0 14px rgba(157,78,221,0.2);
+  }
+
+  .chip-add{
+    cursor:pointer;
+    border:1px dashed var(--neon-cyan);
+    background:rgba(77,238,234,0.06);
+    color:var(--neon-cyan);
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+  }
+  .chip-add:hover{ box-shadow:0 0 18px rgba(77,238,234,0.35); }
+
+  /* ---------- Upload grids (certificates + gallery) ---------- */
+  .upload-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+    gap:1.5rem;
+  }
+
+  .upload-box{
+    position:relative;
+    aspect-ratio:4/3;
+    border-radius:16px;
+    background:var(--bg-panel);
+    overflow:hidden;
+  }
+
+  .upload-add{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:0.6rem;
+    cursor:pointer;
+    border:2px dashed rgba(157,78,221,0.55);
+    border-radius:16px;
+    color:var(--text-muted);
+    background:rgba(157,78,221,0.05);
+    box-shadow:inset 0 0 24px rgba(157,78,221,0.12);
+    transition:border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .upload-add svg{
+    width:36px; height:36px;
+    stroke:currentColor;
+    filter:drop-shadow(0 0 6px rgba(157,78,221,0.4));
+  }
+
+  .upload-add span{ font-size:0.9rem; }
+
+  .upload-box:hover .upload-add,
+  .upload-add:focus-visible{
+    border-color:var(--neon-cyan);
+    color:var(--text-primary);
+    box-shadow:inset 0 0 30px rgba(77,238,234,0.22), 0 0 22px rgba(77,238,234,0.18);
+  }
+
+  .upload-preview{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    cursor:pointer;
+    border-radius:16px;
+    border:2px solid rgba(77,238,234,0.55);
+    box-shadow:0 0 26px rgba(77,238,234,0.28);
+  }
+
+  .upload-remove{
+    position:absolute; top:8px; right:8px;
+    width:30px; height:30px;
+    border-radius:50%;
+    border:1px solid rgba(255,60,170,0.6);
+    background:rgba(5,3,15,0.75);
+    color:var(--neon-pink);
+    font-size:1.05rem;
+    line-height:1;
+    cursor:pointer;
+    z-index:2;
+  }
+  .upload-remove:hover{ background:rgba(255,60,170,0.18); }
+
+  .add-slot-wrap{ display:flex; justify-content:center; margin-top:2.4rem; }
+
+  .add-slot{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:0.95rem;
+    padding:0.75rem 1.6rem;
+    border-radius:999px;
+    border:1px solid var(--neon-violet);
+    background:rgba(157,78,221,0.08);
+    color:var(--text-primary);
+    cursor:pointer;
+    box-shadow:0 0 18px rgba(157,78,221,0.25);
+    transition:transform 0.15s ease, box-shadow 0.2s ease;
+  }
+  .add-slot:hover{ box-shadow:0 0 26px rgba(157,78,221,0.45); transform:translateY(-1px); }
+
+  /* ---------- Goals ---------- */
+  .goal-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:1.4rem;
+  }
+
+  .goal-card{
+    background:var(--bg-panel-2);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:1.6rem;
+    text-align:center;
+  }
+
+  .goal-icon{ font-size:2rem; margin-bottom:0.7rem; }
+  .goal-card p{ margin:0; font-size:0.98rem; line-height:1.6; color:var(--text-body); }
+
+  /* ---------- Footer ---------- */
+  footer{
+    padding:3.5rem 1.5rem 5rem;
+    text-align:center;
+    color:var(--text-muted);
+    font-size:0.88rem;
+  }
+  footer .foot-name{ color:var(--text-body); margin-top:1.2rem; }
+
+  /* ---------- Back to top ---------- */
+  .back-to-top{
+    position:fixed;
+    bottom:24px; right:24px;
+    width:48px; height:48px;
+    border-radius:50%;
+    border:1px solid var(--neon-cyan);
+    background:rgba(5,3,15,0.75);
+    color:var(--neon-cyan);
+    font-size:1.3rem;
+    cursor:pointer;
+    box-shadow:0 0 18px rgba(77,238,234,0.35);
+    z-index:800;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.3s ease, transform 0.2s ease;
+  }
+  .back-to-top.show{ opacity:1; pointer-events:auto; }
+  .back-to-top:hover{ transform:translateY(-2px); }
+
+  /* ---------- Accessibility ---------- */
+  :focus-visible{ outline:2px solid var(--neon-cyan); outline-offset:3px; }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    h1.name{ animation:none; }
+    .reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
+    .skill-fill{ transition:none !important; }
+    .back-to-top{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
+<div class="scroll-progress" id="scroll-progress"></div>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="#home" class="nav-logo">DPS</a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#hobbies">Hobbies</a>
+      <a href="#certificates">Certificates</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#goals">Goals</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="home">
+    <div class="hero-tag">Welcome to my little corner of the internet</div>
+
+    <!-- EDIT NAME HERE if needed -->
+    <h1 class="name">DEV PRATAP SINGH</h1>
+
+    <!-- EDIT SCHOOL / CLASS HERE -->
+    <p class="hero-sub">Class <strong>7th Standard</strong> student at <strong>Sunbeam School, Mau</strong>.</p>
+
+    <div class="hero-badges">
+      <span class="badge">🎓 Class 7</span>
+      <span class="badge">🏫 Sunbeam School, Mau</span>
+      <span class="badge">✨ Always learning something new</span>
+    </div>
+
+    <div class="scroll-hint">scroll down ↓</div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="about reveal" id="about">
+    <h2 class="section-title c-cyan">A little about me</h2>
+    <p class="section-lede">Here's a quick introduction and a few quick facts — feel free to edit any of this in the HTML file.</p>
+
+    <div class="about-card prose">
+      <!-- EDIT THIS PARAGRAPH: replace with your own words -->
+      <p>Hi, I'm Dev! I study in Class 7 at Sunbeam School, Mau. This page is where I keep track of the things
+      I'm learning, the certificates I earn, and the stuff I'm proud of. New achievements get added here as
+      I go along.</p>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-icon">🏫</div>
+        <div class="stat-label">School</div>
+        <div class="stat-value">Sunbeam School, Mau</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🎓</div>
+        <div class="stat-label">Class</div>
+        <div class="stat-value">7th Standard</div>
+      </div>
+      <!-- EDIT: fill in your own favourite subject and dream -->
+      <div class="stat-card">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-label">Favourite subject</div>
+        <div class="stat-value">Add yours here</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">🌟</div>
+        <div class="stat-label">Dream</div>
+        <div class="stat-value">Add yours here</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============ SKILLS ============ -->
+  <section class="skills reveal" id="skills">
+    <h2 class="section-title c-violet">Skills &amp; Subjects</h2>
+    <p class="section-lede">A rough idea of where things stand right now — edit the names and percentages any time.</p>
+
+    <div class="skill-list">
+      <!-- EDIT: change subject names and data-target percentages below -->
+      <div class="skill">
+        <div class="skill-top"><span class="skill-name">Mathematics</span><span class="skill-pct">80%</span></div>
+        <div class="skill-track"><div class="skill-fill" data-target="80"></div></div>
+      </div>
+      <div class="skill">
+        <div class="skill-top"><span class="skill-name">Science</span><span class="skill-pct">75%</span></div>
+        <div class="skill-track"><div class="skill-fill" data-target="75"></div></div>
+      </div>
+      <div class="skill">
+        <div class="skill-top"><span class="skill-name">English</span><span class="skill-pct">85%</span></div>
+        <div class="skill-track"><div class="skill-fill" data-target="85"></div></div>
+      </div>
+      <div class="skill">
+        <div class="skill-top"><span class="skill-name">Computer</span><span class="skill-pct">70%</span></div>
+        <div class="skill-track"><div class="skill-fill" data-target="70"></div></div>
+      </div>
+      <div class="skill">
+        <div class="skill-top"><span class="skill-name">Art &amp; Drawing</span><span class="skill-pct">90%</span></div>
+        <div class="skill-track"><div class="skill-fill" data-target="90"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============ HOBBIES ============ -->
+  <section class="hobbies reveal" id="hobbies">
+    <h2 class="section-title c-lime">Hobbies &amp; Interests</h2>
+    <p class="section-lede">Click "+ Add a hobby" to add your own to the list.</p>
+
+    <div class="chip-grid" id="hobby-grid">
+      <!-- EDIT: change or remove these placeholder hobbies -->
+      <span class="chip">🎨 Drawing</span>
+      <span class="chip">⚽ Football</span>
+      <span class="chip">📖 Reading</span>
+      <span class="chip">🎮 Video games</span>
+      <span class="chip">🎵 Music</span>
+      <button type="button" class="chip chip-add" id="add-hobby-btn">+ Add a hobby</button>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============ CERTIFICATES ============ -->
+  <section class="certificates reveal" id="certificates">
+    <h2 class="section-title c-pink">Certificates &amp; Achievements</h2>
+    <p class="section-lede">Click any box to upload a certificate image. Click an uploaded one again to replace it, or use the × to remove it.</p>
+
+    <div class="upload-grid" id="cert-grid"></div>
+
+    <div class="add-slot-wrap">
+      <button type="button" class="add-slot" id="add-cert-btn">+ Add another slot</button>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============ GALLERY ============ -->
+  <section class="gallery reveal" id="gallery">
+    <h2 class="section-title c-cyan">Photo Gallery</h2>
+    <p class="section-lede">A few pictures of school events, projects, or anything else worth remembering.</p>
+
+    <div class="upload-grid" id="gallery-grid"></div>
+
+    <div class="add-slot-wrap">
+      <button type="button" class="add-slot" id="add-gallery-btn">+ Add another slot</button>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ============ GOALS ============ -->
+  <section class="goals reveal" id="goals">
+    <h2 class="section-title c-violet">Things I'm Working On</h2>
+    <p class="section-lede">A few goals for this year — edit these to match your own.</p>
+
+    <div class="goal-grid">
+      <!-- EDIT: replace with your own goals -->
+      <div class="goal-card">
+        <div class="goal-icon">🚀</div>
+        <p>Learn something new every week.</p>
+      </div>
+      <div class="goal-card">
+        <div class="goal-icon">🏆</div>
+        <p>Take part in more school competitions.</p>
+      </div>
+      <div class="goal-card">
+        <div class="goal-icon">📚</div>
+        <p>Read one new book every month.</p>
+      </div>
+      <div class="goal-card">
+        <div class="goal-icon">💻</div>
+        <p>Get better at using computers and coding.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="divider" style="margin-bottom:1.6rem;"></div>
+    <div class="foot-name">Dev Pratap Singh, Class 7, Sunbeam School, Mau</div>
+    <div>Built with a lot of neon.</div>
+  </footer>
+
+</div>
+
+<button id="back-to-top" class="back-to-top" aria-label="Back to top">↑</button>
+
+<!-- Hidden template used to create each certificate / gallery box -->
+<template id="upload-template">
+  <div class="upload-box">
+    <input type="file" accept="image/*" class="upload-input" hidden>
+    <div class="upload-add" role="button" tabindex="0" aria-label="Add image">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 16V4M12 4l-4 4M12 4l4 4"/>
+        <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
+      </svg>
+      <span class="add-label">Add image</span>
+    </div>
+    <img class="upload-preview" alt="Uploaded image" hidden>
+    <button type="button" class="upload-remove" hidden aria-label="Remove image">&times;</button>
+  </div>
+</template>
+
+<script>
+(function(){
+  "use strict";
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ============================================================
+     Upload boxes (shared by Certificates + Gallery)
+     ============================================================ */
+  var template = document.getElementById('upload-template');
+
+  function setupUploadBox(box){
+    var input = box.querySelector('.upload-input');
+    var addArea = box.querySelector('.upload-add');
+    var preview = box.querySelector('.upload-preview');
+    var removeBtn = box.querySelector('.upload-remove');
+
+    function openPicker(){ input.click(); }
+
+    addArea.addEventListener('click', openPicker);
+    addArea.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        openPicker();
+      }
+    });
+
+    preview.addEventListener('click', openPicker);
+
+    input.addEventListener('change', function(e){
+      var file = e.target.files && e.target.files[0];
+      if(!file) return;
+      var reader = new FileReader();
+      reader.onload = function(ev){
+        preview.src = ev.target.result;
+        preview.hidden = false;
+        addArea.hidden = true;
+        removeBtn.hidden = false;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    removeBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      input.value = '';
+      preview.src = '';
+      preview.hidden = true;
+      addArea.hidden = false;
+      removeBtn.hidden = true;
+    });
+  }
+
+  function addUploadBox(gridEl, label){
+    var node = template.content.cloneNode(true);
+    var box = node.querySelector('.upload-box');
+    box.querySelector('.add-label').textContent = label;
+    box.querySelector('.upload-add').setAttribute('aria-label', label);
+    gridEl.appendChild(box);
+    setupUploadBox(box);
+  }
+
+  var certGrid = document.getElementById('cert-grid');
+  var galleryGrid = document.getElementById('gallery-grid');
+
+  for(var i = 0; i < 8; i++){ addUploadBox(certGrid, 'Add certificate'); }
+  for(var j = 0; j < 4; j++){ addUploadBox(galleryGrid, 'Add photo'); }
+
+  document.getElementById('add-cert-btn').addEventListener('click', function(){
+    addUploadBox(certGrid, 'Add certificate');
+  });
+  document.getElementById('add-gallery-btn').addEventListener('click', function(){
+    addUploadBox(galleryGrid, 'Add photo');
+  });
+
+  /* ============================================================
+     Hobby chips
+     ============================================================ */
+  var hobbyGrid = document.getElementById('hobby-grid');
+  var addHobbyBtn = document.getElementById('add-hobby-btn');
+
+  addHobbyBtn.addEventListener('click', function(){
+    var text = window.prompt('What\'s another hobby you enjoy?');
+    if(text && text.trim()){
+      var chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.textContent = text.trim();
+      hobbyGrid.insertBefore(chip, addHobbyBtn);
+    }
+  });
+
+  /* ============================================================
+     Scroll reveal + skill bar fill
+     ============================================================ */
+  var revealEls = document.querySelectorAll('.reveal');
+
+  function fillSkills(section){
+    var fills = section.querySelectorAll('.skill-fill');
+    fills.forEach(function(f){
+      f.style.width = f.getAttribute('data-target') + '%';
+    });
+  }
+
+  if('IntersectionObserver' in window){
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+          fillSkills(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    revealEls.forEach(function(el){ observer.observe(el); });
+  } else {
+    revealEls.forEach(function(el){
+      el.classList.add('visible');
+      fillSkills(el);
+    });
+  }
+
+  /* ============================================================
+     Scroll progress bar + back-to-top button
+     ============================================================ */
+  var progressBar = document.getElementById('scroll-progress');
+  var backToTop = document.getElementById('back-to-top');
+
+  function onScroll(){
+    var scrollTop = window.scrollY;
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = pct + '%';
+
+    if(scrollTop > 500){
+      backToTop.classList.add('show');
+    } else {
+      backToTop.classList.remove('show');
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  backToTop.addEventListener('click', function(){
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+  });
+
+  /* ============================================================
+     Interactive neon particle background
+     ============================================================ */
+  var canvas = document.getElementById('bg-canvas');
+  var ctx = canvas.getContext('2d');
+
+  var W, H, particles, mouse = { x: null, y: null, active: false, radius: 130 };
+  var PALETTE = ['#4deeea', '#ff3caa', '#9d4edd', '#c6ff3f'];
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function makeParticles(){
+    var area = W * H;
+    var count = Math.min(110, Math.max(35, Math.round(area / 14000)));
+    if(reduceMotion){ count = Math.round(count / 3); }
+    particles = [];
+    for(var i = 0; i < count; i++){
+      particles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * (reduceMotion ? 0.03 : 0.28),
+        vy: (Math.random() - 0.5) * (reduceMotion ? 0.03 : 0.28),
+        r: 1.4 + Math.random() * 1.8,
+        color: PALETTE[Math.floor(Math.random() * PALETTE.length)]
+      });
+    }
+  }
+
+  function hexToRGBA(hex, alpha){
+    var v = hex.replace('#', '');
+    var r = parseInt(v.substring(0,2), 16);
+    var g = parseInt(v.substring(2,4), 16);
+    var b = parseInt(v.substring(4,6), 16);
+    return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+  }
+
+  function step(){
+    ctx.clearRect(0, 0, W, H);
+
+    for(var i = 0; i < particles.length; i++){
+      var p = particles[i];
+
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if(p.x < 0 || p.x > W) p.vx *= -1;
+      if(p.y < 0 || p.y > H) p.vy *= -1;
+
+      if(mouse.active){
+        var dx = p.x - mouse.x;
+        var dy = p.y - mouse.y;
+        var dist = Math.sqrt(dx*dx + dy*dy);
+        if(dist < mouse.radius && dist > 0.01){
+          var force = (mouse.radius - dist) / mouse.radius;
+          p.x += (dx / dist) * force * 2.4;
+          p.y += (dy / dist) * force * 2.4;
+        }
+      }
+
+      for(var k = i + 1; k < particles.length; k++){
+        var q = particles[k];
+        var ddx = p.x - q.x, ddy = p.y - q.y;
+        var d = Math.sqrt(ddx*ddx + ddy*ddy);
+        if(d < 110){
+          ctx.beginPath();
+          ctx.strokeStyle = hexToRGBA(p.color, 0.12 * (1 - d / 110));
+          ctx.lineWidth = 1;
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.stroke();
+        }
+      }
+
+      if(mouse.active){
+        var mdx = p.x - mouse.x, mdy = p.y - mouse.y;
+        var mdist = Math.sqrt(mdx*mdx + mdy*mdy);
+        if(mdist < mouse.radius){
+          ctx.beginPath();
+          ctx.strokeStyle = hexToRGBA(p.color, 0.35 * (1 - mdist / mouse.radius));
+          ctx.lineWidth = 1;
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.stroke();
+        }
+      }
+
+      ctx.beginPath();
+      ctx.fillStyle = p.color;
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = p.color;
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
+    if(!reduceMotion){
+      requestAnimationFrame(step);
+    }
+  }
+
+  window.addEventListener('resize', function(){
+    resize();
+    makeParticles();
+  });
+
+  window.addEventListener('mousemove', function(e){
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+    mouse.active = true;
+  });
+
+  window.addEventListener('mouseleave', function(){ mouse.active = false; });
+
+  window.addEventListener('touchmove', function(e){
+    if(e.touches && e.touches[0]){
+      mouse.x = e.touches[0].clientX;
+      mouse.y = e.touches[0].clientY;
+      mouse.active = true;
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchend', function(){ mouse.active = false; });
+
+  resize();
+  makeParticles();
+
+  if(reduceMotion){
+    step();
+  } else {
+    requestAnimationFrame(step);
+  }
+
+})();
+</script>
+
+</body>
+</html>
