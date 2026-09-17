@@ -238,7 +238,6 @@
   h2.section-title.c-cyan{ text-shadow:0 0 16px rgba(77,238,234,0.55); }
   h2.section-title.c-pink{ text-shadow:0 0 16px rgba(255,60,170,0.55); }
   h2.section-title.c-violet{ text-shadow:0 0 16px rgba(157,78,221,0.55); }
-  h2.section-title.c-lime{ text-shadow:0 0 16px rgba(198,255,63,0.5); }
 
   .section-lede{
     color:var(--text-muted);
@@ -273,34 +272,10 @@
   }
 
   .stat-icon{ font-size:1.8rem; margin-bottom:0.5rem; }
-  .stat-label{ font-size:0.82rem; color:var(--text-muted); text-transform:none; }
+  .stat-label{ font-size:0.82rem; color:var(--text-muted); }
   .stat-value{ font-size:1.02rem; color:var(--text-primary); margin-top:0.25rem; font-weight:600; }
 
-  /* ---------- Skills ---------- */
-  .skill-list{ display:flex; flex-direction:column; gap:1.5rem; }
-
-  .skill-top{ display:flex; justify-content:space-between; margin-bottom:0.5rem; font-size:0.98rem; }
-  .skill-name{ color:var(--text-primary); }
-  .skill-pct{ color:var(--neon-cyan); }
-
-  .skill-track{
-    height:12px;
-    border-radius:8px;
-    background:rgba(255,255,255,0.06);
-    box-shadow:inset 0 0 6px rgba(0,0,0,0.4);
-    overflow:hidden;
-  }
-
-  .skill-fill{
-    height:100%;
-    width:0%;
-    border-radius:8px;
-    background:linear-gradient(90deg, var(--neon-cyan), var(--neon-violet));
-    box-shadow:0 0 12px rgba(77,238,234,0.5);
-    transition:width 1.2s cubic-bezier(.2,.8,.2,1);
-  }
-
-  /* ---------- Hobbies ---------- */
+  /* ---------- Hobbies (static, edit in code) ---------- */
   .chip-grid{ display:flex; flex-wrap:wrap; gap:0.8rem; }
 
   .chip{
@@ -315,32 +290,21 @@
     box-shadow:0 0 14px rgba(157,78,221,0.2);
   }
 
-  .chip-add{
-    cursor:pointer;
-    border:1px dashed var(--neon-cyan);
-    background:rgba(77,238,234,0.06);
-    color:var(--neon-cyan);
-    font-family:'Space Grotesk', sans-serif;
-    font-weight:600;
-  }
-  .chip-add:hover{ box-shadow:0 0 18px rgba(77,238,234,0.35); }
-
-  /* ---------- Upload grids (certificates + gallery) ---------- */
-  .upload-grid{
+  /* ---------- Certificates (static placeholders) ---------- */
+  .cert-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
     gap:1.5rem;
   }
 
-  .upload-box{
+  .cert-box{
     position:relative;
     aspect-ratio:4/3;
     border-radius:16px;
-    background:var(--bg-panel);
     overflow:hidden;
   }
 
-  .upload-add{
+  .cert-placeholder{
     position:absolute;
     inset:0;
     display:flex;
@@ -348,70 +312,30 @@
     align-items:center;
     justify-content:center;
     gap:0.6rem;
-    cursor:pointer;
     border:2px dashed rgba(157,78,221,0.55);
     border-radius:16px;
     color:var(--text-muted);
     background:rgba(157,78,221,0.05);
     box-shadow:inset 0 0 24px rgba(157,78,221,0.12);
-    transition:border-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
   }
 
-  .upload-add svg{
-    width:36px; height:36px;
+  .cert-placeholder svg{
+    width:34px; height:34px;
     stroke:currentColor;
     filter:drop-shadow(0 0 6px rgba(157,78,221,0.4));
   }
 
-  .upload-add span{ font-size:0.9rem; }
+  .cert-placeholder span{ font-size:0.9rem; }
 
-  .upload-box:hover .upload-add,
-  .upload-add:focus-visible{
-    border-color:var(--neon-cyan);
-    color:var(--text-primary);
-    box-shadow:inset 0 0 30px rgba(77,238,234,0.22), 0 0 22px rgba(77,238,234,0.18);
-  }
-
-  .upload-preview{
+  /* Use this class on the <img> once you replace a placeholder with a real certificate */
+  .cert-img{
     position:absolute; inset:0;
     width:100%; height:100%;
     object-fit:cover;
-    cursor:pointer;
     border-radius:16px;
     border:2px solid rgba(77,238,234,0.55);
     box-shadow:0 0 26px rgba(77,238,234,0.28);
   }
-
-  .upload-remove{
-    position:absolute; top:8px; right:8px;
-    width:30px; height:30px;
-    border-radius:50%;
-    border:1px solid rgba(255,60,170,0.6);
-    background:rgba(5,3,15,0.75);
-    color:var(--neon-pink);
-    font-size:1.05rem;
-    line-height:1;
-    cursor:pointer;
-    z-index:2;
-  }
-  .upload-remove:hover{ background:rgba(255,60,170,0.18); }
-
-  .add-slot-wrap{ display:flex; justify-content:center; margin-top:2.4rem; }
-
-  .add-slot{
-    font-family:'Space Grotesk', sans-serif;
-    font-weight:600;
-    font-size:0.95rem;
-    padding:0.75rem 1.6rem;
-    border-radius:999px;
-    border:1px solid var(--neon-violet);
-    background:rgba(157,78,221,0.08);
-    color:var(--text-primary);
-    cursor:pointer;
-    box-shadow:0 0 18px rgba(157,78,221,0.25);
-    transition:transform 0.15s ease, box-shadow 0.2s ease;
-  }
-  .add-slot:hover{ box-shadow:0 0 26px rgba(157,78,221,0.45); transform:translateY(-1px); }
 
   /* ---------- Goals ---------- */
   .goal-grid{
@@ -467,7 +391,6 @@
     html{ scroll-behavior:auto; }
     h1.name{ animation:none; }
     .reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
-    .skill-fill{ transition:none !important; }
     .back-to-top{ transition:none; }
   }
 </style>
@@ -482,10 +405,8 @@
     <a href="#home" class="nav-logo">DPS</a>
     <div class="nav-links">
       <a href="#about">About</a>
-      <a href="#skills">Skills</a>
       <a href="#hobbies">Hobbies</a>
       <a href="#certificates">Certificates</a>
-      <a href="#gallery">Gallery</a>
       <a href="#goals">Goals</a>
     </div>
   </div>
@@ -517,13 +438,12 @@
   <!-- ============ ABOUT ============ -->
   <section class="about reveal" id="about">
     <h2 class="section-title c-cyan">A little about me</h2>
-    <p class="section-lede">Here's a quick introduction and a few quick facts — feel free to edit any of this in the HTML file.</p>
+    <p class="section-lede">Edit any of this text directly in the HTML file.</p>
 
     <div class="about-card prose">
       <!-- EDIT THIS PARAGRAPH: replace with your own words -->
       <p>Hi, I'm Dev! I study in Class 7 at Sunbeam School, Mau. This page is where I keep track of the things
-      I'm learning, the certificates I earn, and the stuff I'm proud of. New achievements get added here as
-      I go along.</p>
+      I'm learning and the certificates I've earned.</p>
     </div>
 
     <div class="stat-grid">
@@ -553,51 +473,18 @@
 
   <div class="divider"></div>
 
-  <!-- ============ SKILLS ============ -->
-  <section class="skills reveal" id="skills">
-    <h2 class="section-title c-violet">Skills &amp; Subjects</h2>
-    <p class="section-lede">A rough idea of where things stand right now — edit the names and percentages any time.</p>
-
-    <div class="skill-list">
-      <!-- EDIT: change subject names and data-target percentages below -->
-      <div class="skill">
-        <div class="skill-top"><span class="skill-name">Mathematics</span><span class="skill-pct">80%</span></div>
-        <div class="skill-track"><div class="skill-fill" data-target="80"></div></div>
-      </div>
-      <div class="skill">
-        <div class="skill-top"><span class="skill-name">Science</span><span class="skill-pct">75%</span></div>
-        <div class="skill-track"><div class="skill-fill" data-target="75"></div></div>
-      </div>
-      <div class="skill">
-        <div class="skill-top"><span class="skill-name">English</span><span class="skill-pct">85%</span></div>
-        <div class="skill-track"><div class="skill-fill" data-target="85"></div></div>
-      </div>
-      <div class="skill">
-        <div class="skill-top"><span class="skill-name">Computer</span><span class="skill-pct">70%</span></div>
-        <div class="skill-track"><div class="skill-fill" data-target="70"></div></div>
-      </div>
-      <div class="skill">
-        <div class="skill-top"><span class="skill-name">Art &amp; Drawing</span><span class="skill-pct">90%</span></div>
-        <div class="skill-track"><div class="skill-fill" data-target="90"></div></div>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
   <!-- ============ HOBBIES ============ -->
   <section class="hobbies reveal" id="hobbies">
-    <h2 class="section-title c-lime">Hobbies &amp; Interests</h2>
-    <p class="section-lede">Click "+ Add a hobby" to add your own to the list.</p>
+    <h2 class="section-title c-violet">Hobbies &amp; Interests</h2>
+    <p class="section-lede">Edit the list below directly in the HTML file to change or add hobbies.</p>
 
-    <div class="chip-grid" id="hobby-grid">
-      <!-- EDIT: change or remove these placeholder hobbies -->
+    <div class="chip-grid">
+      <!-- EDIT: change, remove, or add chips here. Copy a line to add a new one. -->
       <span class="chip">🎨 Drawing</span>
       <span class="chip">⚽ Football</span>
       <span class="chip">📖 Reading</span>
       <span class="chip">🎮 Video games</span>
       <span class="chip">🎵 Music</span>
-      <button type="button" class="chip chip-add" id="add-hobby-btn">+ Add a hobby</button>
     </div>
   </section>
 
@@ -606,26 +493,73 @@
   <!-- ============ CERTIFICATES ============ -->
   <section class="certificates reveal" id="certificates">
     <h2 class="section-title c-pink">Certificates &amp; Achievements</h2>
-    <p class="section-lede">Click any box to upload a certificate image. Click an uploaded one again to replace it, or use the × to remove it.</p>
+    <p class="section-lede">Certificates get added here as I earn them.</p>
 
-    <div class="upload-grid" id="cert-grid"></div>
+    <!--
+      HOW TO ADD A CERTIFICATE (edit this on GitHub):
+      1. Upload your certificate image into your repo, e.g. in a folder named "certificates".
+      2. Inside any box below, delete the <div class="cert-placeholder">...</div> and replace it with:
+         <img src="certificates/your-file.jpg" alt="Certificate name" class="cert-img">
+      3. Save the file. That box now shows your certificate instead of the placeholder.
+    -->
+    <div class="cert-grid">
 
-    <div class="add-slot-wrap">
-      <button type="button" class="add-slot" id="add-cert-btn">+ Add another slot</button>
+     <div class="cert-box">
+    <div class="cert-placeholder">
+        <img src="certificate.jpg" alt="Certificate" class="cert-img">
     </div>
-  </section>
+    </div>
 
-  <div class="divider"></div>
+      <div class="cert-box">
+        <div class="cert-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="5"/>
+            <path d="M8.5 12.5L7 21l5-3 5 3-1.5-8.5"/>
+          </svg>
+          <span>Certificate</span>
+        </div>
+      </div>
 
-  <!-- ============ GALLERY ============ -->
-  <section class="gallery reveal" id="gallery">
-    <h2 class="section-title c-cyan">Photo Gallery</h2>
-    <p class="section-lede">A few pictures of school events, projects, or anything else worth remembering.</p>
+      <div class="cert-box">
+        <div class="cert-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="5"/>
+            <path d="M8.5 12.5L7 21l5-3 5 3-1.5-8.5"/>
+          </svg>
+          <span>Certificate</span>
+        </div>
+      </div>
 
-    <div class="upload-grid" id="gallery-grid"></div>
+      <div class="cert-box">
+        <div class="cert-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="5"/>
+            <path d="M8.5 12.5L7 21l5-3 5 3-1.5-8.5"/>
+          </svg>
+          <span>Certificate</span>
+        </div>
+      </div>
 
-    <div class="add-slot-wrap">
-      <button type="button" class="add-slot" id="add-gallery-btn">+ Add another slot</button>
+      <div class="cert-box">
+        <div class="cert-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="5"/>
+            <path d="M8.5 12.5L7 21l5-3 5 3-1.5-8.5"/>
+          </svg>
+          <span>Certificate</span>
+        </div>
+      </div>
+
+      <div class="cert-box">
+        <div class="cert-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="5"/>
+            <path d="M8.5 12.5L7 21l5-3 5 3-1.5-8.5"/>
+          </svg>
+          <span>Certificate</span>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -667,22 +601,6 @@
 
 <button id="back-to-top" class="back-to-top" aria-label="Back to top">↑</button>
 
-<!-- Hidden template used to create each certificate / gallery box -->
-<template id="upload-template">
-  <div class="upload-box">
-    <input type="file" accept="image/*" class="upload-input" hidden>
-    <div class="upload-add" role="button" tabindex="0" aria-label="Add image">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 16V4M12 4l-4 4M12 4l4 4"/>
-        <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
-      </svg>
-      <span class="add-label">Add image</span>
-    </div>
-    <img class="upload-preview" alt="Uploaded image" hidden>
-    <button type="button" class="upload-remove" hidden aria-label="Remove image">&times;</button>
-  </div>
-</template>
-
 <script>
 (function(){
   "use strict";
@@ -690,108 +608,15 @@
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ============================================================
-     Upload boxes (shared by Certificates + Gallery)
-     ============================================================ */
-  var template = document.getElementById('upload-template');
-
-  function setupUploadBox(box){
-    var input = box.querySelector('.upload-input');
-    var addArea = box.querySelector('.upload-add');
-    var preview = box.querySelector('.upload-preview');
-    var removeBtn = box.querySelector('.upload-remove');
-
-    function openPicker(){ input.click(); }
-
-    addArea.addEventListener('click', openPicker);
-    addArea.addEventListener('keydown', function(e){
-      if(e.key === 'Enter' || e.key === ' '){
-        e.preventDefault();
-        openPicker();
-      }
-    });
-
-    preview.addEventListener('click', openPicker);
-
-    input.addEventListener('change', function(e){
-      var file = e.target.files && e.target.files[0];
-      if(!file) return;
-      var reader = new FileReader();
-      reader.onload = function(ev){
-        preview.src = ev.target.result;
-        preview.hidden = false;
-        addArea.hidden = true;
-        removeBtn.hidden = false;
-      };
-      reader.readAsDataURL(file);
-    });
-
-    removeBtn.addEventListener('click', function(e){
-      e.preventDefault();
-      e.stopPropagation();
-      input.value = '';
-      preview.src = '';
-      preview.hidden = true;
-      addArea.hidden = false;
-      removeBtn.hidden = true;
-    });
-  }
-
-  function addUploadBox(gridEl, label){
-    var node = template.content.cloneNode(true);
-    var box = node.querySelector('.upload-box');
-    box.querySelector('.add-label').textContent = label;
-    box.querySelector('.upload-add').setAttribute('aria-label', label);
-    gridEl.appendChild(box);
-    setupUploadBox(box);
-  }
-
-  var certGrid = document.getElementById('cert-grid');
-  var galleryGrid = document.getElementById('gallery-grid');
-
-  for(var i = 0; i < 8; i++){ addUploadBox(certGrid, 'Add certificate'); }
-  for(var j = 0; j < 4; j++){ addUploadBox(galleryGrid, 'Add photo'); }
-
-  document.getElementById('add-cert-btn').addEventListener('click', function(){
-    addUploadBox(certGrid, 'Add certificate');
-  });
-  document.getElementById('add-gallery-btn').addEventListener('click', function(){
-    addUploadBox(galleryGrid, 'Add photo');
-  });
-
-  /* ============================================================
-     Hobby chips
-     ============================================================ */
-  var hobbyGrid = document.getElementById('hobby-grid');
-  var addHobbyBtn = document.getElementById('add-hobby-btn');
-
-  addHobbyBtn.addEventListener('click', function(){
-    var text = window.prompt('What\'s another hobby you enjoy?');
-    if(text && text.trim()){
-      var chip = document.createElement('span');
-      chip.className = 'chip';
-      chip.textContent = text.trim();
-      hobbyGrid.insertBefore(chip, addHobbyBtn);
-    }
-  });
-
-  /* ============================================================
-     Scroll reveal + skill bar fill
+     Scroll reveal (purely visual, not editable by visitors)
      ============================================================ */
   var revealEls = document.querySelectorAll('.reveal');
-
-  function fillSkills(section){
-    var fills = section.querySelectorAll('.skill-fill');
-    fills.forEach(function(f){
-      f.style.width = f.getAttribute('data-target') + '%';
-    });
-  }
 
   if('IntersectionObserver' in window){
     var observer = new IntersectionObserver(function(entries){
       entries.forEach(function(entry){
         if(entry.isIntersecting){
           entry.target.classList.add('visible');
-          fillSkills(entry.target);
           observer.unobserve(entry.target);
         }
       });
@@ -799,10 +624,7 @@
 
     revealEls.forEach(function(el){ observer.observe(el); });
   } else {
-    revealEls.forEach(function(el){
-      el.classList.add('visible');
-      fillSkills(el);
-    });
+    revealEls.forEach(function(el){ el.classList.add('visible'); });
   }
 
   /* ============================================================
